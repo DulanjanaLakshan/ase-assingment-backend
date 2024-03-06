@@ -1,25 +1,24 @@
 import { Field, ID, ObjectType } from "@nestjs/graphql";
 
-@ObjectType("BlogPost")
+@ObjectType("BlogPsot")
 export class BlogPostType {
-    @Field((type) => ID)
-    id: string;
+  @Field((type) => ID)
+  id: string;
+  @Field()
+  title: string;
 
-    @Field()
-    title: string;
+  @Field()
+  body: string;
 
-    @Field()
-    body: string;
+  @Field()
+  image: string;
 
-    @Field((type) => [String])
-    tags: string[];
+  @Field()
+  author: string;
 
-    @Field()
-    author: string;
+  @Field()
+  createdAt: string;
 
-    @Field()
-    createdAt: string;
-
-    @Field()
-    updatedAt: string;
+  @Field()
+  updatedAt: string;
 }

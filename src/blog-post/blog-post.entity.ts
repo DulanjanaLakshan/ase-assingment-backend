@@ -15,7 +15,7 @@ export class BlogPost {
   body: string;
 
   @Column()
-  tags: string[];
+  image: string;
 
   @Column()
   author: string;

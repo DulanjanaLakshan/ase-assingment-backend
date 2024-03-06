@@ -20,7 +20,8 @@ export class UserResolver {
   }
 
   @Mutation((returns) => UserType)
-  async createUser(@Args("createUserInput") createUserInput: CreateUserInput) {
+  async createUser(
+    @Args("createUserInput") createUserInput: CreateUserInput) {
     return this.userService.saveUser(createUserInput);
   }
 

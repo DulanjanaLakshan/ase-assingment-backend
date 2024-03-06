@@ -1,9 +1,8 @@
 import { Field, InputType } from "@nestjs/graphql";
 import { MinLength } from "class-validator";
-import { User } from "src/user/user.entity";
 
 @InputType()
-export class CreateBlogPost {
+export class CreateBlogPostInput {
   @MinLength(1)
   @Field()
   title: string;
@@ -14,21 +13,21 @@ export class CreateBlogPost {
 
   @MinLength(1)
   @Field()
-  tags: string[];
+  image: string;
 
   @MinLength(1)
   @Field()
   author: string;
 
-  @Field()
-  createdAt: string;
+  @Field({ nullable: true })
+  createdAt?: string;
 
-  @Field()
-  updatedAt: string;
+  @Field({ nullable: true })
+  updatedAt?: string;
 }
 
 @InputType()
-export class UpdateBlogPost {
+export class UpdateBlogPostInput {
   @Field({ nullable: true })
   title?: string;
 
@@ -36,7 +35,7 @@ export class UpdateBlogPost {
   body?: string;
 
   @Field({ nullable: true })
-  tags?: string[];
+  image?: string;
 
   @Field({ nullable: true })
   author?: string;

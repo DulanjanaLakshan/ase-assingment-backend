@@ -1,15 +1,14 @@
-import { Module } from "@nestjs/common";
-import { GraphQLModule } from "@nestjs/graphql";
-import { ApolloDriver, ApolloDriverConfig } from "@nestjs/apollo";
-import { TypeOrmModule } from "@nestjs/typeorm";
-import { User } from "./user/user.entity";
-import { UserModule } from "./user/user.module";
-import { BlogPostModule } from "./blog-post/blog-post.module";
-import { CommentModule } from "./comment/comment.module";
-import { BlogPost } from "./blog-post/blog-post.entity";
+import { Module } from '@nestjs/common';
+import { BlogPostModule } from './blog-post/blog-post.module';
+import { UserModule } from './user/user.module';
+import { CommentModule } from './comment/comment.module';
+import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
+import { GraphQLModule } from '@nestjs/graphql';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { BlogPost } from './blog-post/blog-post.entity';
 
 const uri =
-  "mongodb+srv://dulanjana20013:WFSnN6CTsVY8MG2U@cypso.x4lxv8k.mongodb.net/assingment?retryWrites=true&w=majority&appName=Cypso";
+  "mongodb+srv://dulanjana20013:WFSnN6CTsVY8MG2U@cypso.x4lxv8k.mongodb.net/assingment_02?retryWrites=true&w=majority&appName=Cypso";
 
 @Module({
   imports: [
@@ -18,15 +17,17 @@ const uri =
       url: uri,
       synchronize: true,
       useUnifiedTopology: true,
-      entities: [User, BlogPost],
+      entities: [
+        BlogPost
+      ],
     }),
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
       autoSchemaFile: true,
     }),
-    UserModule,
-    BlogPostModule,
-    CommentModule,
-  ],
+    BlogPostModule, 
+    UserModule, 
+    CommentModule],
+  providers: [],
 })
 export class AppModule {}
