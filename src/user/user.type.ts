@@ -25,4 +25,5 @@ export class UserType {
 
   @Field()
   updatedAt: string;
+  
 }

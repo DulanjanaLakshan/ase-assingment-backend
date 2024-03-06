@@ -1,5 +1,5 @@
 import { Field, InputType } from "@nestjs/graphql";
-import { IsDateString, MinLength } from "class-validator";
+import { IsDateString, IsNotEmpty, MinLength } from "class-validator";
 
 @InputType()
 export class CreateUserInput {
@@ -54,4 +54,15 @@ export class UpdateUserInput {
 
   @Field({ nullable: true })
   updatedAt?: string;
+}
+
+@InputType()
+export class SignInInput {
+  @IsNotEmpty()
+  @Field()
+  username: string;
+
+  @IsNotEmpty()
+  @Field()
+  password: string;
 }

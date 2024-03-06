@@ -1,7 +1,7 @@
 import { Args, Mutation, Resolver, Query } from "@nestjs/graphql";
 import { UserType } from "./user.type";
 import { UserService } from "./user.service";
-import { CreateUserInput, UpdateUserInput } from "./user.input";
+import { CreateUserInput, SignInInput, UpdateUserInput } from "./user.input";
 import { User } from "./user.entity";
 import { NotFoundException } from "@nestjs/common";
 
@@ -33,6 +33,13 @@ export class UserResolver {
     if (!user) {
       throw new NotFoundException(`User with ID ${id} not found after update`);
     }
+    return user;
+  }
+
+  @Mutation((returns) => UserType)
+  async signIn(@Args("signInInput") signInInput: SignInInput): Promise<UserType> {
+    const user = await this.userService.signIn(signInInput);
+    delete user.password;
     return user;
   }
 }
