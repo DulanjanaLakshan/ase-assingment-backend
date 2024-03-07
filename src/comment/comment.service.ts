@@ -19,8 +19,8 @@ export class CommentService {
     return this.commentRepository.findOne({ id } as FindOneOptions<Comment>);
   }
 
-  async getCommentByBlogPostId(blogId: string): Promise<Comment> {
-    return this.commentRepository.findOne({ blogId } as FindOneOptions<
+  async getCommentByPostId(blogId: string): Promise<Comment[]> {
+    return this.commentRepository.find({ blogId } as FindOneOptions<
       Comment
     >);
   }
