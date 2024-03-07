@@ -12,6 +12,9 @@ export class Comment {
   comment: string;
 
   @Column()
+  blogId: string;
+  
+  @Column()
   author: string;
 
   @Column()
