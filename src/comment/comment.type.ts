@@ -10,6 +10,8 @@ export class CommentType {
 
   @Field()
   author: string;
+  @Field()
+  blogId: string;
 
   @Field()
   createdAt: string;
