@@ -14,12 +14,6 @@ export class CreateCommentInput {
   @MinLength(1)
   @Field()
   blogId: string;
-
-  @Field({ nullable: true })
-  createdAt?: string;
-
-  @Field({ nullable: true })
-  updatedAt?: string;
 }
 
 @InputType()
