@@ -17,9 +17,9 @@ export class CommentRepolver {
     return this.commentService.getCommentById(id);
   }
 
-  @Query((returns) => CommentType)
-  async findCommentByPostId(@Args("postId") postId: string) {
-    return this.commentService.getCommentByPostId(postId);
+  @Query((returns) => [CommentType])
+  async findCommentByPostId(@Args("blogId") blogId: string) {
+    return this.commentService.getCommentByPostId(blogId);
   }
 
   @Mutation((returns) => CommentType)

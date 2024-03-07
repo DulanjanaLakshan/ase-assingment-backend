@@ -25,7 +25,6 @@ export class UserResolver {
 
   @Mutation((returns) => UserType)
   async signIn(@Args('loginUserInput') loginUserInput: LoginUserInput): Promise<User> {
-    console.log("is working");
     return this.userService.signIn(loginUserInput);
   }
 }
