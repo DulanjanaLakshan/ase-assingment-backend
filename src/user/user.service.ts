@@ -1,78 +1,57 @@
-import { Injectable, NotFoundException, UnauthorizedException } from "@nestjs/common";
+import { Injectable, UnauthorizedException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { User } from "./user.entity";
-import { FindOneOptions, In, Repository } from "typeorm";
-import { CreateUserInput, SignInInput, UpdateUserInput } from "./user.input";
-import { v4 as uuid } from "uuid";
-import * as bcrypt from 'bcrypt';
+import { FindOneOptions, Repository } from "typeorm";
+import { CreateUserInput, LoginUserInput } from "./user.input";
+import { v4 as uuid } from 'uuid';
+import * as bcrypt from 'bcryptjs';
+import * as jwt from 'jsonwebtoken';
 
 @Injectable()
 export class UserService {
   constructor(
-    @InjectRepository(User) private userRepository: Repository<User>
+    @InjectRepository(User)
+    private userRepository: Repository<User>
   ) {}
 
-  async saveUser(createUserInput: CreateUserInput): Promise<User> {
-    const {
-      firstName,
-      lastName,
-      email,
-      password,
-      username,
-    } = createUserInput;
-
+  async createUser(createUserInput:CreateUserInput):Promise<User>{
+    const { firstName,lastName, username, email, password } = createUserInput;
+    const hashedPassword = await bcrypt.hash(password, 10);
     const user = this.userRepository.create({
       id: uuid(),
       firstName,
       lastName,
-      email,
       username,
-      password,
+      email,
+      password: hashedPassword,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
     });
-
     return this.userRepository.save(user);
   }
 
-  async updateUser(id: string, updatedData: UpdateUserInput): Promise<User> {
-    const user = await this.userRepository.findOne({ id } as FindOneOptions<User>);
-
+  async signIn(loginUserInput:LoginUserInput):Promise<User>{
+    const { email, password } = loginUserInput;
+    const user = await this.userRepository.findOne({ email } as FindOneOptions<User>);
     if (!user) {
-      throw new NotFoundException(`User with ID ${id} not found`);
+      throw new UnauthorizedException('Invalid credentials');
     }
 
-    Object.assign(user, {
-      ...updatedData,
-      updatedAt: new Date().toISOString(),
-    });
+    const isPasswordValid = await bcrypt.compare(password,user.password);
 
-    return this.userRepository.save(user);
+    if(!isPasswordValid){
+      throw new UnauthorizedException('Invalid credentials');
+    }
+    const token = jwt.sign({userId:user.id},'DulanjanaJwtTocken121$',{ expiresIn: '1h' });
+    delete user.password;
+    return user;
   }
 
-  async getAllUsers(): Promise<User[]> {
+  async getAllUsers():Promise<User[]>{
     return this.userRepository.find();
   }
 
-  async getUserById(id: string): Promise<User> {
-    return this.userRepository.findOne({ id } as FindOneOptions<User>);
-  }
-
-  async signIn(signInInput: SignInInput): Promise<User> {
-    const { username, password } = signInInput;
-
-    const user = await this.userRepository.findOne({ username } as FindOneOptions<User>);
-
-    if (!user) {
-      throw new UnauthorizedException('Invalid credentials');
-    }
-
-    const passwordMatched = await bcrypt.compare(password, user.password);
-
-    if (!passwordMatched) {
-      throw new UnauthorizedException('Invalid credentials');
-    }
-
-    return user;
+  async findUserByID(id:string):Promise<User>{
+    return this.userRepository.findOne({id} as FindOneOptions<User>)
   }
 }

@@ -7,6 +7,7 @@ import { GraphQLModule } from "@nestjs/graphql";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { BlogPost } from "./blog-post/blog-post.entity";
 import { Comment } from "./comment/comment.entity";
+import { User } from "./user/user.entity";
 
 const uri =
   "mongodb+srv://dulanjana20013:WFSnN6CTsVY8MG2U@cypso.x4lxv8k.mongodb.net/assingment_02?retryWrites=true&w=majority&appName=Cypso";
@@ -18,7 +19,7 @@ const uri =
       url: uri,
       synchronize: true,
       useUnifiedTopology: true,
-      entities: [BlogPost, Comment],
+      entities: [BlogPost, Comment, User],
     }),
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
